@@ -4,30 +4,44 @@ import connection from "../db.js";
 function index(req, res) {
     const query = "SELECT * from posts";
 
-    connection.query(query, (err,result)=>{
-        if(err){
+    connection.query(query, (err, result) => {
+        if (err) {
             res.status(500);
             return res.json({
                 message: "Internal server error"
             })
         }
 
-        res.json({results: result})
+        res.json({ results: result })
     })
 
 }
 
 //----------show
 function show(req, res) {
-    const id = parseInt(req.params.id);
-    const monumento = monumentiSanCataldo.find(monumento => monumento.id === id);
-    if (monumento === undefined) {
-        res.status(404);
-        return res.json({ message: "monumento non disponibile" })
-    }
-    res.json(monumento)
-}
+    const id = req.params.id;
+    const query = "SELECT * FROM `posts` WHERE `posts`.`id`=?"
 
+    connection.query(query, [id], (err, result) => {
+        if (err) {
+            res.status(500);
+            return res.json({
+                message: "Internal server error"
+            })
+        }
+        if (results.length === 0) {
+            res.status(404);
+            req.json({
+                message: "cibo non trovato"
+            })
+        } else {
+            const post = result[0];
+            res.json(post)
+        }
+
+        res.json(post)
+    })
+}
 //-----------store
 function store(req, res) {
     const dati = req.body
