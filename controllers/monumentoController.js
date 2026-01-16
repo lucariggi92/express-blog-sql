@@ -1,10 +1,19 @@
-import connection from "../data/db.js";
+import connection from "../db.js";
 
 ///---------index
 function index(req, res) {
-    const query = SELECT * from `posts`;
+    const query = "SELECT * from posts";
 
-    connection.query(query, (err,result)=>)
+    connection.query(query, (err,result)=>{
+        if(err){
+            res.status(500);
+            return res.json({
+                message: "Internal server error"
+            })
+        }
+
+        res.json({results: result})
+    })
 
 }
 
