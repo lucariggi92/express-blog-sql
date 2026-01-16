@@ -2,7 +2,9 @@ import connection from "../data/db.js";
 
 ///---------index
 function index(req, res) {
-    const quety = SELECT * from `pizzas`
+    const query = SELECT * from `posts`;
+
+    connection.query(query, (err,result)=>)
 
 }
 
