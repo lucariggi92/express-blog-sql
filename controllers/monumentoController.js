@@ -29,7 +29,7 @@ function show(req, res) {
                 message: "Internal server error"
             })
         }
-        if (results.length === 0) {
+        if (result.length === 0) {
             res.status(404);
             req.json({
                 message: "cibo non trovato"
@@ -100,17 +100,19 @@ function modify(req, res) {
 
 //----------destroy
 function destroy(req, res) {
-    const id = parseInt(req.params.id)
-    const monumentoIndex = monumentiSanCataldo.findIndex((monumento) => monumento.id === id)
+    const id = req.params.id
+    const query = "DELETE FROM `posts` WHERE id = ?";
+    connection.query(query, [id], (err)=>{
+        if(err){
+            res.status(500);
+            return res.json({
+                message: "interal error"
+            });
+        }
+        res.sendStatus(204)
+    })
+    
 
-    if (monumentoIndex === -1) {
-        res.status(404)
-        return res.json({
-            message: "monumento non disponibile"
-        })
-    }
-    monumentiSanCataldo.splice(monumentoIndex, 1)
-    res.sendStatus(204)
 }
 const controller = {
     index,
